@@ -1,0 +1,52 @@
+.banner {
+    height:75px;
+    margin:20px -10px 10px;
+    background-color: rgb(97, 22, 118);
+    border-radius: 2px;
+}
+.banner H1{
+    font-family:'Helvetica','Verdana','Monaco',sans-serif;
+    color: white;
+    padding: 10px -10px 0px;
+    margin-left: 2%;
+    display: inline-block;
+}
+.banner Img{
+    margin:0px 0px 0px;
+    position:relative;
+    float:right;
+    right: 10px;
+    height: 90px;
+
+}
+
+.titlesX_Dropdown{
+    width: 20%;
+    position:relative;
+    float:left;
+    margin:20px 10px 20px;
+}
+.titlesY_Dropdown{
+    width: 20%;
+    position:relative;
+    float:left;
+    margin:20px 10px 10px;
+}
+
+.titlesXSev_Dropdown{
+    width: 20%;
+    position:relative;
+    float:left;
+    margin:20px 10px 20px 200px;
+}
+.titlesYSev_Dropdown{
+    width: 20%;
+    position:relative;
+    float:left;
+    margin:20px 10px 20px 50px;
+}
+.six_columns{
+    width: 80%;
+    margin:50px 50px 10px 100px;
+    padding:50px 50px 10px 50px;
+}
