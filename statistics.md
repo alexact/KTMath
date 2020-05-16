@@ -1,16 +1,7 @@
----
-title: "Untitled"
-author: alexa
-date: 9/04/2020
-output: rmarkdown::html_vignette
----
+# Tabla de frecuencia
+En ella puedes verificar cual es la media, la moda, los maáximos y minimos de los datos.
+La información de 
 
-# Gestión del conocimiento con inteligencia matemática
-
- - Fugas en transferencia de conocimiento en tu empresa?
- - Conoces las causas?
- - Quisieras reconocer de manera cuantitativa este tipo de problemáticas?
- - Generar un control de la gestión del conocimiento
 
 ## **Qué es KTmat*?*
 KTmat es una herramienta diseñada para facilitar a las empresas y a personas dedicadas a la gestión del conocimiento el diagnostico de problematicas que se encuentran en la transferencia de conocimiento utilizando herramientas estadísticas y de machine learning para mejorar su precisión.
