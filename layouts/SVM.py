@@ -1,11 +1,3 @@
-"""
-This app's data and plots are heavily inspired from the scikit-learn Classifier
-comparison tutorial. Part of the app's code is directly taken from it. You can
-find it here:
-http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html
-
-The Confusion Matrix Pie Chart format was inspired by Nicolas's Dash ROC app.
-"""
 import base64
 import io
 import time

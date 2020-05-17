@@ -26,9 +26,7 @@ app.layout = html.Div([
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
-    if pathname == '/ktmath/upload':
-         return layout_upload
-    elif pathname == '/ktmath/svmAlgorithm':
+    if pathname == '/ktmath/svmAlgorithm':
          return layout_SVM
     elif pathname == '/ktmath/statistics':
         return layout_statistics

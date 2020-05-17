@@ -28,7 +28,7 @@ class Data:
 
     # Recibe el archivo en formato csv de los resultados de la encuesta
     def data(self):
-        file = pd.read_csv('D:\IngenieriadeSistemas\TrabajodeGrado\prueba.csv',
+        file = pd.read_csv('D:\IngenieriadeSistemas\TrabajodeGrado\dataInit.csv',
                            encoding='unicode_escape')
         return file
 

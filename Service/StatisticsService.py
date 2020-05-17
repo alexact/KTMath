@@ -16,6 +16,10 @@ class StatisticsController:
         df_frec = s.frecuency_table(df)
         return df_frec
 
+    def init_table(self):
+        s = Statistics()
+        df = s.gerenation_df_severity(0,"")
+        return df
     def get_graphs_dispersion(self, nameX, nameY):
         df = StatisticsController.get_allData(data.df_X)
         df_dispersion = pd.merge(df[nameX], df[nameY], left_on=nameX, right_on=nameY)

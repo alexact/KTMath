@@ -12,9 +12,10 @@ from sklearn import metrics
 from Model.Data import Data
 
 from Service.StatisticsService import StatisticsController
+from layouts.statistics_layout import upload_class
 
 data = Data()
-df_frec = StatisticsController().generate_statistics(data.df_X)
+upload_class.df_frec = StatisticsController().init_table()
 
 def serve_prediction_plot(model,
                           X_train,
@@ -223,7 +224,7 @@ def serve_pie_confusion_matrix(model,
 
 def frecuency_table():
     figure = go.Figure(
-        data=df_frec,
+        data=upload_class.df_frec,
         layout=go.Layout(
             xaxis=dict(zeroline=False),
             yaxis=dict(
@@ -247,7 +248,7 @@ def frecuency_table():
             plot_bgcolor="rgb(245, 247, 249)",
         ),
     )
-    list_frec = list(df_frec)
+    list_frec = list(upload_class.df_frec)
     columns = (
         [{"name": "Parameter", "id": "param"}]
         + {"name": "-", "id": "-"}+[
@@ -275,7 +276,7 @@ def frecuency_table():
     for key, name in result_names.items():
         d = dict(param=name)
         for subject in list_frec:
-            d[int(subject)] = getattr(df_frec[subject], key)
+            d[int(subject)] = getattr(upload_class.df_frec[subject], key)
 
         data.append(d)
 

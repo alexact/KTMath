@@ -17,8 +17,11 @@ class Statistics:
 
     def gerenation_df_severity(self, start_col, dataUpload):
         d = Data()
+        if type(dataUpload) is str:
+            dataUpload = pd.DataFrame(d.data())
+            print('Entro')
         list_title = list(d.file_variables_title())
-        full_set_df = d.data() #  dataUpload
+        full_set_df = dataUpload
         new_df = pd.DataFrame()
         new_df[list_title[0]] = full_set_df.iloc[:, start_col] * full_set_df.iloc[:, (start_col - 1) + 2]
         for col in range(len(list_title) - 1):
