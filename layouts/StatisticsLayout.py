@@ -2,9 +2,9 @@ import dash
 import dash_table
 import plotly.express as px
 import pandas as pd
-from Service.StatisticsService import StatisticsController
+from Service.StatisticsController import StatisticsController
 from layouts.app import app
-import layouts.components_view as drc
+import layouts.ComponentsView as drc
 import base64
 import io
 import dash_core_components as dcc
@@ -12,39 +12,28 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import datetime
 
-file = pd.read_csv('D:\IngenieriadeSistemas\TrabajodeGrado\prueba.csv',
-                           encoding='unicode_escape')
-titles_file = pd.read_csv('D:\IngenieriadeSistemas\TrabajodeGrado\dataTituloVariablesprueba.csv',
-                           encoding='unicode_escape')
-df = pd.DataFrame(file)
-df_titles = pd.DataFrame(titles_file)
-colX=0
-colY=1
 
+class UploadClass:
+    severity_df = StatisticsController( )
+    df_data = severity_df.init_table( )
+    df_frecuency = df_data
+    titles_frec = []
+    titles_dropdown = []
+    print(df_data)
+    if not df_data.empty:
+        df_frecuency = pd.DataFrame({'title': ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']})
+        df_frecuency = df_frecuency + df_data
+        titles_frec = [{'name': 'title', 'id': 'title'}]
+        print(df_frecuency)
 
+    for i in list(df_data):
+        titles_frec.append({'name': i, 'id': i})
 
+    for i in list(df_data):
+        titles_dropdown.append({'label': i, 'value': i})
 
-fig_correlation = px.scatter(df,
-                             x=df.iloc[:, 0], y=df.iloc[:, 1],
-                             title="Gráfica de correlación",
-                             )
-titles=[{'label': 'index', 'value': '-'}]
-for i in df_titles:
-    titles.append({'label': i, 'value': i})
-
-table_header_style = {
-    "backgroundColor": "rgb(2,21,70)",
-    "color": "white",
-    "textAlign": "center",
-}
-df_frec1 = pd.DataFrame({'-': ['count', 'mean','std','min','25%','50%','75%','max']})
-
-
-class upload_class:
-    severity_df = StatisticsController()
-    df_frec= severity_df.init_table()
-    def parse_contents(contents, filename, date):
-        content_type, content_string = contents.split(',')
+    def parse_contents(self, filename, date):
+        content_type, content_string = self.split(',')
         decoded = base64.b64decode(content_string)
 
         try:
@@ -52,12 +41,12 @@ class upload_class:
                 # Assume that the user uploaded a CSV file
                 df_X = pd.read_csv(
                     io.StringIO(decoded.decode('utf-8')))
-                upload_class.df_frec = upload_class.severity_df.generate_statistics(df_X)
+                UploadClass.df_frecuency = UploadClass.severity_df.generate_statistics(df_X)
             elif 'xls' in filename:
                 # Assume that the user uploaded an excel file
                 df_X = pd.read_excel(io.BytesIO(decoded))
-                upload_class.df_frec =  upload_class.severity_df.generate_statistics(df_X)
-                print(upload_class.df_frec)
+                UploadClass.df_frecuency = UploadClass.severity_df.generate_statistics(df_X)
+
         except Exception as e:
             print(e)
             return html.Div([
@@ -67,8 +56,25 @@ class upload_class:
         return html.Div([
             html.H5(filename),
             html.H6(datetime.datetime.fromtimestamp(date)),
-            html.Hr(),  # horizontal line
+            html.Hr( ),  # horizontal line
         ])
+
+
+df = UploadClass.df_data
+
+colX = 0
+colY = 1
+
+fig_correlation = px.scatter(df,
+                             x=df.iloc[:, 0], y=df.iloc[:, 1],
+                             title="Gráfica de correlación",
+                             )
+
+table_header_style = {
+    "backgroundColor": "rgb(2,21,70)",
+    "color": "white",
+    "textAlign": "center",
+}
 
 # grafica de corelación
 layout_statistics = html.Div([
@@ -88,7 +94,7 @@ layout_statistics = html.Div([
                 - El 50% de los trabajadores consideran que para la variable "Disinterest" existe una severidad de...
                 - El 75% de los trabajadores consideran que para la variable "Disinterest" existe una severidad de...
             '''
-            )
+                         )
         ]),
         html.Div([dcc.Upload(
             id='upload-datas',
@@ -109,14 +115,14 @@ layout_statistics = html.Div([
             # Allow multiple files to be uploaded
             multiple=True
         ),
-        html.Div(id='output-data-uploads'),
+            html.Div(id='output-data-uploads'),
 
         ]),
         html.Div([
             dash_table.DataTable(
                 id='frec_table',
-                data=upload_class.df_frec.to_dict('records'),
-                columns=[{'name': i, 'id': i} for i in list(upload_class.df_frec)],
+                data=UploadClass.df_frecuency.to_dict('records'),
+                columns=UploadClass.titles_frec,
                 style_as_list_view=True,
                 style_header=table_header_style,
                 style_data_conditional=[
@@ -132,51 +138,64 @@ layout_statistics = html.Div([
                 ],
             ),
 
-            html.Hr()
+            html.Hr( )
         ]),
-    html.Div([
-        dcc.Graph(
-            id="correlation-Graph",
-            config = {'displaylogo': False}
-        ),
+        html.Div([
+            dcc.Graph(
+                id="correlation-Graph",
+                config={'displaylogo': False}
+            ),
 
-    ], className="six_columns"),
-        html.Div([dcc.Dropdown(id='var_XSev', options=titles, value=titles[2]['value'])], className="titlesXSev_Dropdown"),
-        html.Div([dcc.Dropdown(id='var_YSev', options=titles, value=titles[3]['value'])], className="titlesYSev_Dropdown")
+        ], className="six_columns"),
+        html.Div([dcc.Dropdown(id='var_XSev', options=UploadClass.titles_dropdown,
+                               value=UploadClass.titles_dropdown[2]['value'])], className="titlesXSev_Dropdown"),
+        html.Div([dcc.Dropdown(id='var_YSev', options=UploadClass.titles_dropdown,
+                               value=UploadClass.titles_dropdown[3]['value'])], className="titlesYSev_Dropdown")
     ]),
 
 ], className="row")
 
 
 @app.callback(Output('frec_table', 'data'),
-              [Input('output-data-uploads', 'children')],)
-def update_table(childreUpload):
-    print("change")
-    return upload_class.df_frec.to_dict('records')
-
-
+              [Input('output-data-uploads', 'children')], )
+def update_table(childrenUpload):
+    if UploadClass.df_data is None:
+        print(UploadClass.df_frecuency.to_dict('records'))
+        return UploadClass.df_frecuency.to_dict('records')
 
 
 @app.callback(dash.dependencies.Output("correlation-Graph", "figure"),
-              [dash.dependencies.Input("var_XSev", "value"),
+              [Input('frec_table', 'data'),
+               dash.dependencies.Input("var_XSev", "value"),
                dash.dependencies.Input("var_YSev", "value")])
-def update_fig_corr(input_value,var_YSev):
-
+def update_fig_corr(data_df, input_value, var_YSev, ):
     print(" carga correlación ")
-    title=list(df_titles)
+    title = [i for i in list(UploadClass.df_data)]
     colX = title.index(input_value)
     colY = title.index(var_YSev)
+    if data_df is not None:
+        data = []
+        data.append(dict(
+            x=data_df[title[colX]],
+            y=data_df[title[colY]],
+            mode='markers',
+            opacity=0.7,
+            marker={
+                'size': 15,
+                'line': {'width': 0.5, 'color': 'white'}
+            }))
+        layout = dict(
+            title="Gráfica de correlación",
+            xaxis={'type': 'log', 'title': title[colX]},
+            yaxis={'title': title[colY]},
+            legend={'x': 'a', 'y': 0},
+            hovermode='closest'
+        )
 
-    data=[]
-    data.append(dict(
-        x=df[title[colX]],
-        y=df[title[colY]],
-        mode='markers',
-        opacity=0.7,
-        marker={
-            'size': 15,
-            'line': {'width': 0.5, 'color': 'white'}
-        }))
+        print('You have selected for X corr"{}"'.format(input_value))
+        r = {"data": data,
+             "layout": layout}
+        return r
     layout = dict(
         title="Gráfica de correlación",
         xaxis={'type': 'log', 'title': title[colX]},
@@ -184,12 +203,19 @@ def update_fig_corr(input_value,var_YSev):
         legend={'x': 'a', 'y': 0},
         hovermode='closest'
     )
-
-    print('You have selected for X corr"{}"'.format(input_value))
-    r={"data":data,
-            "layout":layout}
+    data = []
+    data.append(dict(
+        x=0,
+        y=0,
+        mode='markers',
+        opacity=0.7,
+        marker={
+            'size': 15,
+            'line': {'width': 0.5, 'color': 'white'}
+        }))
+    r = {"data": data,
+         "layout": layout}
     return r
-
 
 
 @app.callback(Output('output-data-uploads', 'children'),
@@ -197,9 +223,8 @@ def update_fig_corr(input_value,var_YSev):
               [State('upload-datas', 'filename'),
                State('upload-datas', 'last_modified')])
 def update_output(list_of_contents, list_of_names, list_of_dates):
-
     if list_of_contents is not None:
         children = [
-            upload_class.parse_contents(c, n, d) for c, n, d in
+            UploadClass.parse_contents(c, n, d) for c, n, d in
             zip(list_of_contents, list_of_names, list_of_dates)]
         return children

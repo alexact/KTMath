@@ -2,14 +2,10 @@ import base64
 import datetime
 import io
 
-from dash.dependencies import Input, Output, State
-import dash_core_components as dcc
 import dash_html_components as html
 # from Services.DataBL import Data_bl
 
 import pandas as pd
-from layouts.app import app
-import Model.Data
 
 
 def _merge(a, b):

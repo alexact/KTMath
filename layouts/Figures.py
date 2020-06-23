@@ -1,21 +1,15 @@
 import colorlover as cl
 import plotly.graph_objs as go
 import numpy as np
-from sklearn import metrics
-
-
-import colorlover as cl
-import plotly.graph_objs as go
-import numpy as np
 from collections import OrderedDict
 from sklearn import metrics
-from Model.Data import Data
+from Service.DataService import DataService
 
-from Service.StatisticsService import StatisticsController
-from layouts.statistics_layout import upload_class
+from Service.StatisticsController import StatisticsController
+from layouts.StatisticsLayout import UploadClass
 
-data = Data()
-upload_class.df_frec = StatisticsController().init_table()
+data = DataService( )
+UploadClass.df_data = StatisticsController( ).init_table( )
 
 def serve_prediction_plot(model,
                           X_train,
@@ -224,7 +218,7 @@ def serve_pie_confusion_matrix(model,
 
 def frecuency_table():
     figure = go.Figure(
-        data=upload_class.df_frec,
+        data=UploadClass.df_data,
         layout=go.Layout(
             xaxis=dict(zeroline=False),
             yaxis=dict(
@@ -248,7 +242,7 @@ def frecuency_table():
             plot_bgcolor="rgb(245, 247, 249)",
         ),
     )
-    list_frec = list(upload_class.df_frec)
+    list_frec = list(UploadClass.df_data)
     columns = (
         [{"name": "Parameter", "id": "param"}]
         + {"name": "-", "id": "-"}+[
@@ -276,7 +270,7 @@ def frecuency_table():
     for key, name in result_names.items():
         d = dict(param=name)
         for subject in list_frec:
-            d[int(subject)] = getattr(upload_class.df_frec[subject], key)
+            d[int(subject)] = getattr(UploadClass.df_data[subject], key)
 
         data.append(d)
 

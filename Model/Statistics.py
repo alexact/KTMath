@@ -1,12 +1,11 @@
-import numpy as np
 import pandas as pd
-from Model.Data import Data
 
+from Service.DataService import DataService
 
 
 class Statistics:
     def generation_df_impact_frecuency(self, directory):
-        d = Data().data()
+        d = DataService( ).data( )
         new_df = pd.DataFrame(d)
         return new_df
     '''
@@ -16,7 +15,7 @@ class Statistics:
     '''
 
     def gerenation_df_severity(self, start_col, dataUpload):
-        d = Data()
+        d = DataService( )
         if type(dataUpload) is str:
             dataUpload = pd.DataFrame(d.data())
             print('Entro')
@@ -37,7 +36,7 @@ class Statistics:
         return new_df.shape()
 
     def title(self):
-        df= pd.DataFrame(Data().file_variables_title())
+        df = pd.DataFrame(DataService( ).file_variables_title( ))
         return df
 
     def generate_titles(self):

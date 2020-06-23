@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn import datasets
 
 
-class Data:
+class DataService:
     x, y = datasets.make_moons(
         n_samples=200,
         noise=0.6,
@@ -15,7 +15,7 @@ class Data:
     ))
 
     def __init__(self):
-        self.df_X = Data.x
+        self.df_X = DataService.x
 
 
 

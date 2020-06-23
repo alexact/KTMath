@@ -11,15 +11,15 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 import datetime
 
-import layouts.components_view as drc
+import layouts.ComponentsView as drc
 from layouts.Figures import serve_prediction_plot, serve_roc_curve, \
     serve_pie_confusion_matrix
 
 from Model.Statistics import Statistics
 from layouts.app import app
-from layouts.component_upload_view import parse_contents
-from Service.StatisticsService import StatisticsController
-from Model.Data import Data as data
+from layouts.ComponentUploadView import parse_contents
+from Service.StatisticsController import StatisticsController
+from Service.DataService import DataService as data
 import pandas as pd
 
 

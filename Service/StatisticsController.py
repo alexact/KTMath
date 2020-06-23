@@ -1,7 +1,6 @@
 import pandas as pd
-import numpy as np
 from Model.Statistics import Statistics
-from Model.Data import Data as data
+from Service.DataService import DataService as data
 
 # Gestiona la data proveniente del archivo excel
 class StatisticsController:

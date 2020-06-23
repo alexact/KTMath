@@ -5,7 +5,7 @@ from dash.dependencies import Input, Output
 from layouts.app import app
 from layouts.SVM import layout_SVM
 # from layouts.component_upload_view import layout_upload
-from layouts.statistics_layout import layout_statistics
+from layouts.StatisticsLayout import layout_statistics
 # import callbacks
 
 app.layout = html.Div([
@@ -31,7 +31,7 @@ def display_page(pathname):
     elif pathname == '/ktmath/statistics':
         return layout_statistics
     else:
-        return '404'
+        return layout_SVM
 
 if __name__ == '__main__':
     app.run_server(debug=True)
